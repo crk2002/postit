@@ -1,3 +1,22 @@
-<h3>Welcome!</h3>
+<%= render "shared/content_title", title: "All Posts" %>
 
-<p>This is the Postit template. You've access the PostsController, index action. This is the index template. Find me under app/views/posts folder.</p>
+<% @posts.each do |post| %>
+  <div class="row">
+    <div class="span8 well">
+      <% post.categories.each do |category| %>
+        <span class="badge"><%= category.name %></span>
+      <% end %>
+      <h4><%= link_to post.title, post.url %></h4>
+      <p><%= post.description %></p>
+      <p>
+        <span class="quiet">posted by</span>
+        <%= post.creator.username %>
+        <span class="quiet">at</span>
+        <%= post.created_at %>
+      </p>
+      <small>
+        <%= link_to pluralize(post.comments.size, "comment"), post %>
+      </small>
+    </div>
+  </div>
+<% end %>
