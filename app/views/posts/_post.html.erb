@@ -1,14 +1,30 @@
 <div class="row">
+  <div class="span1 well text-center">
+    <% if logged_in? %>
+      <%= link_to vote_post_path(post, vote: true), method: 'post' do %>
+      <i class="icon-arrow-up"></i>
+      <% end %>
+      <br />
+    <% end %>
+    <%= pluralize(post.total_votes, "vote") %>
+    <% if logged_in? %>
+      <br />
+      <%= link_to vote_post_path(post, vote: false), method: 'post' do %>
+      <i class="icon-arrow-down"></i>
+      <% end %>
+    <% end %>
+  </div>
   <div class="span8 well">
     <%= render post.categories %>
-    <h4><%= link_to post.title, post.url %></h4>
+    <h4><%= link_to post.title, fix_url(post.url) %></h4>
     <p><%= post.description %></p>
-    <p> 
+    <small> 
       <span class="quiet">posted by</span>
       <%= !post.creator.nil? ? post.creator.username : "some user" %>
-      <span class="quiet">at</span>
-      <%= post.created_at %>
-    </p>
+      <span class="quiet">on</span>
+      <%= fix_time(post.created_at) %>
+    </small>
+    /
     <small>
       <%= link_to pluralize(post.comments.size, "comment"), post %>
     </small>

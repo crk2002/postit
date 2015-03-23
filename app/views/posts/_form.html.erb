@@ -8,5 +8,9 @@
   <%= f.label :description %>
   <%= f.text_area :description %>
   <br/>
+  <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) do |box| %>
+    <%= box.label(class: "checkbox inline") {box.check_box(class: "checkbox") + box.text} %> 
+  <% end %>
+  <br/>
   <%= f.submit submit_text, class: "btn btn-primary" %>
 <% end %>
