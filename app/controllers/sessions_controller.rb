@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
-    session[:return_to] ||= request.referer
+    session[:return_to] = request.referer
   end
   
   def create
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
   def destroy
     flash[:notice] = "User #{current_user.username} was successfully logged out!"
     session[:user_id] = nil
-    redirect_to request.referer
+    redirect_to :back
   end
     
 end
