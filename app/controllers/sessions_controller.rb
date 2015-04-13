@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
     user=User.find_by username: params[:username]
     if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+      session[:user] = user.slug
       if session[:return_to]
         redirect_to session.delete(:return_to)
       else
@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
   
   def destroy
     flash[:notice] = "User #{current_user.username} was successfully logged out!"
-    session[:user_id] = nil
+    session[:user] = nil
     redirect_to :back
   end
     

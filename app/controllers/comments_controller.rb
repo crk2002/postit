@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
 
   
   def create
-    @post=Post.find params[:post_id]
+    @post=Post.find_by slug: params[:post_id]
     @comment=@post.comments.build(params.require(:comment).permit(:body))
     @comment.post = @post
     @comment.creator = current_user
@@ -22,7 +22,11 @@ class CommentsController < ApplicationController
     vote = @comment.votes.find_or_initialize_by(user: current_user)
     vote.vote = params[:vote]
     vote.save
-    redirect_to :back
+    
+    respond_to do |format|
+      format.html {redirect_to :back}
+      format.js
+    end
   end
   
 end

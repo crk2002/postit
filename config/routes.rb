@@ -7,7 +7,12 @@ PostitTemplate::Application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   
   
-  resources :users, only: [:create, :show, :edit, :update]
+  resources :users, only: [:create, :show, :edit, :update] do
+    get 'get_two_auth', on: :member
+    post 'verify_two_auth', on: :member
+  end
+  
+  
   
   
   resources :posts, except: :destroy do

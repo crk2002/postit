@@ -5,7 +5,7 @@ module ApplicationHelper
   end
   
   def fix_time(time)
-    Time.zone.at(time).strftime("%D at %r %Z")
+    time.strftime("%D at %r %Z")
   end
   
 end

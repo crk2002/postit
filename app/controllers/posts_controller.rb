@@ -2,6 +2,7 @@ class PostsController < ApplicationController
   
   before_action :set_post_to_current, only: [:show, :edit, :update, :vote]
   before_action :authenticated_user?, only: [:new, :create, :edit, :update, :vote]
+  before_action :can_edit?, only: [:edit, :update]
   
   def index
     @posts=Post.all.sort_by(&:total_votes).reverse
@@ -9,6 +10,11 @@ class PostsController < ApplicationController
   
   def show
     @comment=Comment.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @post }
+      format.xml { render xml: @post }
+    end
   end
   
   def new
@@ -43,7 +49,19 @@ class PostsController < ApplicationController
     vote = @post.votes.find_or_initialize_by(user: current_user)
     vote.vote = params[:vote]
     vote.save
-    redirect_to :back
+    
+    respond_to do |format|
+      format.html {redirect_to :back}
+      format.js
+    end
+    
+  end
+  
+  def can_edit?
+    unless logged_in? && current_user.admin? || current_user == @post.creator
+      flash[:error] = "You don't have permission to edit this post."
+      redirect_to root_path
+    end
   end
   
   private
@@ -53,7 +71,7 @@ class PostsController < ApplicationController
   end
   
   def set_post_to_current
-    @post=Post.find params[:id]
+    @post=Post.find_by slug: params[:id]
   end
-
+    
 end

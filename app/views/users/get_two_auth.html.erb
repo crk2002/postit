@@ -1,0 +1,7 @@
+<%= render 'shared/errors', obj: @user %>
+
+<%= form_tag(verify_two_auth_user_path(@user), method: "post") do %>
+  <%= label_tag :two_auth_code, "To authorize your phone, enter the six-digit code sent via SMS to your number (#{@user.phone}):" %>
+  <%= text_field_tag :two_auth_code %>
+  <%= submit_tag "Enter", class: 'btn btn-primary' %>
+<% end %>
